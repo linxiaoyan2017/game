@@ -33,18 +33,29 @@ export class Audio {
         this._initCtx();
 
         // 预加载 HTML <audio> 元素中的 BGM 文件
+        // 加超时保险：iOS 微信浏览器 canplaythrough 可能永远不触发
         const bgEl = document.getElementById('bg-music');
         if (bgEl) {
             await new Promise((resolve) => {
+                let resolved = false;
+                const done = () => { if (!resolved) { resolved = true; resolve(); } };
+
                 bgEl.addEventListener('canplaythrough', () => {
-                    console.log('✅ BGM文件加载成功: cyberpunk-ambient.mp3');
-                    resolve();
+                    console.log('✅ BGM文件加载成功');
+                    done();
                 }, { once: true });
                 bgEl.addEventListener('error', () => {
-                    console.warn('⚠️ BGM文件未找到，请将音频文件放入: assets/sounds/cyberpunk-ambient.mp3');
-                    resolve(); // 加载失败不阻塞游戏
+                    console.warn('⚠️ BGM文件未找到，静音运行');
+                    done();
                 }, { once: true });
-                bgEl.load(); // 触发加载
+
+                // 3秒超时，防止 iOS 微信/Safari 卡死
+                setTimeout(() => {
+                    console.warn('⚠️ BGM加载超时，跳过音频预加载');
+                    done();
+                }, 3000);
+
+                bgEl.load();
             });
         }
 

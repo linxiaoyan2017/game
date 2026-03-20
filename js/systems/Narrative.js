@@ -132,17 +132,29 @@ export class Narrative {
             }, delay);
         });
 
-        // 结局完成后显示重玩按钮
+        // 结局完成后显示重玩按钮（动态创建，不移动原始DOM避免顺序错乱）
         const totalDuration = lines[lines.length - 1].delay + 2500;
         setTimeout(() => {
-            const r = document.getElementById('restart-game');
-            const s = document.getElementById('share-game');
-            if (r) { r.style.display = 'inline-block'; }
-            if (s) { s.style.display = 'inline-block'; }
-            // 把按钮移到 finale-overlay 里
             const content = document.getElementById('finale-content');
-            if (content && r) content.appendChild(r);
-            if (content && s) content.appendChild(s);
+            if (!content || document.getElementById('finale-btns')) return;
+
+            const btnGroup = document.createElement('div');
+            btnGroup.id = 'finale-btns';
+            btnGroup.style.cssText = 'display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap;';
+
+            const restartBtn = document.createElement('button');
+            restartBtn.className = 'cyberpunk-btn';
+            restartBtn.textContent = '重新开始';
+            restartBtn.addEventListener('click', () => this.game?.restartGame());
+
+            const shareBtn = document.createElement('button');
+            shareBtn.className = 'cyberpunk-btn';
+            shareBtn.textContent = '分享游戏';
+            shareBtn.addEventListener('click', () => this.game?.shareGame());
+
+            btnGroup.appendChild(restartBtn);
+            btnGroup.appendChild(shareBtn);
+            content.appendChild(btnGroup);
         }, totalDuration);
     }
 
@@ -167,13 +179,8 @@ export class Narrative {
             if (el) { el.style.opacity = '0'; el.textContent = ''; }
         });
 
-        // 把按钮放回控制面板
-        const panel = document.getElementById('control-panel');
-        const r = document.getElementById('restart-game');
-        const s = document.getElementById('share-game');
-        if (panel) {
-            if (r) { r.style.display = 'none'; panel.appendChild(r); }
-            if (s) { s.style.display = 'none'; panel.appendChild(s); }
-        }
+        // 移除动态创建的结局按钮组（原始按钮未被移动，无需归还）
+        const finaleBtns = document.getElementById('finale-btns');
+        if (finaleBtns) finaleBtns.remove();
     }
 }

@@ -855,12 +855,34 @@ body[data-env="5"] #game-container {
   #info-panel {
     left: 8px;
     right: 8px;
-    height: 44px;
-    padding: 8px 12px;
+    height: auto;
+    min-height: 68px;
+    padding: 6px 12px;
+    padding-right: 80px; /* 为倒计时留位（第一行右侧） */
+    flex-wrap: wrap;
+    align-content: flex-start;
+    row-gap: 4px;
   }
 
+  /* 第一行：阶段文字占满宽度 */
   #current-stage {
-    font-size: 12px;
+    width: 100%;
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 第二行：进度条 + 得分 */
+  #progress-bar {
+    margin: 0 8px 0 0;
+    height: 6px;
+  }
+
+  /* 倒计时高度与两行面板对齐 */
+  #countdown-timer {
+    height: 68px;
   }
 
   /* 移动端消息字体缩小 */

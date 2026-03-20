@@ -110,6 +110,11 @@ class Game {
             this.systems.narrative?.triggerFinale();
         });
 
+        // 监听合并事件，实时更新顶部阶段文案
+        this.systems.gameState.addEventListener('entitiesMerged', ({ newEntity }) => {
+            this._updateStageDisplay(newEntity?.stage);
+        });
+
         // ── 🛠️ 调试快捷键（仅 localhost，线上自动失效）──
         const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
         if (isLocal) {
@@ -231,6 +236,38 @@ class Game {
         // 最后兜底：弹窗让用户手动复制
         const msg = `请手动复制以下内容分享：\n\n${text}`;
         prompt('分享内容（Ctrl+C 复制）：', text) !== null && console.log('用户已看到分享内容');
+    }
+
+    // ── 顶部阶段文案更新 ──
+    _updateStageDisplay(stage) {
+        if (!stage) return;
+        const maxStage = this.systems.gameState.currentMaxEvolutionStage;
+        const targetStage = Math.max(stage, maxStage); // 始终显示最高已达到阶段
+
+        // 从进化链里取名字
+        const chain = this.systems.aiEvolution?.evolutionChain;
+        const stageData = chain?.find(s => s.stage === targetStage);
+        const stageName = stageData?.name || `阶段 ${targetStage}`;
+        const emoji     = stageData?.emoji || '🤖';
+
+        const el = document.getElementById('current-stage');
+        if (el) {
+            el.textContent = `${emoji} 阶段 ${targetStage}: ${stageName}`;
+            // 短暂高亮提示玩家升级了
+            el.style.color = '#ffffff';
+            el.style.textShadow = '0 0 12px #00ffff, 0 0 24px #00ffff';
+            clearTimeout(this._stageDisplayTimer);
+            this._stageDisplayTimer = setTimeout(() => {
+                el.style.color = '';
+                el.style.textShadow = '';
+            }, 1500);
+        }
+
+        // 同步更新进度条（11阶为满）
+        const fill = document.getElementById('progress-fill');
+        if (fill) {
+            fill.style.width = `${Math.min((targetStage / 11) * 100, 100)}%`;
+        }
     }
 
     // ── UI 控制 ──

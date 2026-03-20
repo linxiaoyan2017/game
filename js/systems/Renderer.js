@@ -543,9 +543,7 @@ export class Renderer {
         ctx.font = 'bold 13px "Courier New", monospace';
         ctx.fillStyle = 'rgba(0,255,136,0.8)';
         ctx.textAlign = 'left';
-        ctx.fillText(`SCORE: ${state.score}`, 12, 20);
-        ctx.textAlign = 'right';
-        ctx.fillText(`MAX: ${this.getMaxStageName(state.currentMaxEvolutionStage)}`, w - 12, 20);
+        // SCORE 和阶段已显示在顶部 info-panel，这里不再重复渲染
         ctx.restore();
     }
 

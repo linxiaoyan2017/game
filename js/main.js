@@ -315,6 +315,21 @@ class Game {
         if (fill) {
             fill.style.width = `${Math.min((targetStage / 11) * 100, 100)}%`;
         }
+
+        // 同步更新得分（带跳动动画）
+        this._updateScoreDisplay();
+    }
+
+    _updateScoreDisplay() {
+        const score = this.systems.gameState?.score ?? 0;
+        const el = document.getElementById('score-value');
+        if (!el) return;
+        el.textContent = score;
+        // 跳动效果
+        el.classList.remove('pop');
+        requestAnimationFrame(() => el.classList.add('pop'));
+        clearTimeout(this._scorePopTimer);
+        this._scorePopTimer = setTimeout(() => el.classList.remove('pop'), 200);
     }
 
     // ── 倒计时 ──

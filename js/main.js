@@ -167,8 +167,29 @@ class Game {
     restartGame() {
         this.isRunning = false;
         this.systems.gameEngine.stopGameLoop();
-        this.showStartScreen();
+
+        // 重置所有系统（含 Narrative，会隐藏结局遮罩并把按钮移回原位）
+        Object.values(this.systems).forEach(sys => sys.reset?.());
+
+        // 隐藏重启/分享按钮，重新设置物理边界
         this.hideEndScreen();
+        const w = this.systems.renderer.logicalWidth  || 400;
+        const h = this.systems.renderer.logicalHeight || 600;
+        this.systems.physics.setBounds(0, w, 0, h);
+
+        // 直接开始新的一局，不需要用户再点"开始进化"
+        this.isRunning = true;
+        this.systems.gameState.startGame();
+        this.systems.audio.startBackgroundMusic();
+        this.systems.gameEngine.startGameLoop();
+
+        // 重置顶部阶段文案
+        const el = document.getElementById('current-stage');
+        if (el) el.textContent = '📡 初始化中 · 🔸 数据比特';
+        const fill = document.getElementById('progress-fill');
+        if (fill) fill.style.width = '0%';
+
+        console.log('🔄 游戏重新开始');
     }
 
     shareGame() {

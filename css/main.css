@@ -319,6 +319,65 @@ body {
   text-shadow: 0 0 5px var(--neon-cyan);
 }
 
+/* === 失败遮罩 === */
+#gameover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: fadeIn 0.5s ease;
+}
+
+#gameover-content {
+  text-align: center;
+  padding: 40px;
+}
+
+#gameover-glitch {
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: #ff003c;
+  text-shadow: 0 0 10px #ff003c;
+  margin-bottom: 16px;
+  animation: glitch-text 0.3s infinite;
+}
+
+@keyframes glitch-text {
+  0%   { transform: translate(0); opacity: 1; }
+  25%  { transform: translate(-2px, 1px); opacity: 0.8; }
+  50%  { transform: translate(2px, -1px); opacity: 1; }
+  75%  { transform: translate(-1px, 2px); opacity: 0.9; }
+  100% { transform: translate(0); opacity: 1; }
+}
+
+#gameover-title {
+  font-size: 36px;
+  color: #ff003c;
+  text-shadow: 0 0 20px #ff003c, 0 0 40px #ff003c;
+  margin-bottom: 16px;
+}
+
+#gameover-desc {
+  color: #aaa;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+#gameover-stats {
+  color: var(--neon-cyan);
+  font-size: 13px;
+  font-family: monospace;
+  line-height: 2;
+  border: 1px solid rgba(0,255,255,0.2);
+  padding: 12px 20px;
+  border-radius: 6px;
+  background: rgba(0,255,255,0.05);
+}
+
 /* === CSS3 背景环境动画 === */
 @keyframes canvas-breathe {
   0%, 100% { opacity: 0.95; }

@@ -143,6 +143,9 @@ export class Narrative {
         const finaleEl = document.getElementById('finale-overlay');
         if (finaleEl) finaleEl.style.display = 'none';
 
+        const gameoverEl = document.getElementById('gameover-overlay');
+        if (gameoverEl) gameoverEl.style.display = 'none';
+
         ['narrative-message', 'evolution-message'].forEach(id => {
             const el = document.getElementById(id);
             if (el) { el.style.opacity = '0'; el.textContent = ''; }

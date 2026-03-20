@@ -30,11 +30,41 @@ export class Physics {
     // 主更新
     // ─────────────────────────────────────────
     update(deltaTime) {
-        const dt = Math.min(deltaTime / 1000, 0.05); // 转为秒，最大50ms
+        const dt = Math.min(deltaTime / 1000, 0.05);
         this.updateEntityPhysics(dt);
         this.checkCollisions();
         this.enforceWorldBounds();
         this.mergeCooldown.clear();
+        this.checkOverflow();
+    }
+
+    // ─────────────────────────────────────────
+    // 溢出检测：球静止在顶部警戒线以上 → 游戏结束
+    // ─────────────────────────────────────────
+    checkOverflow() {
+        const state = this.systems?.gameState;
+        if (!state?.isPlaying()) return;
+
+        // 警戒线：顶部往下 15% 的位置
+        const dangerY = this.worldBounds.top + (this.worldBounds.bottom - this.worldBounds.top) * 0.15;
+
+        for (const e of this.entities) {
+            // 球的顶部超过警戒线，且速度已经很小（静止或缓慢移动）
+            const top = e.y - e.radius;
+            const isSettled = Math.abs(e.vy) < 30 && Math.abs(e.vx) < 30;
+            if (top < dangerY && isSettled) {
+                // 延迟 1 秒确认（避免刚掉下来的球误触发）
+                if (!e._overflowTimer) {
+                    e._overflowTimer = Date.now();
+                } else if (Date.now() - e._overflowTimer > 1000) {
+                    console.log('💀 球堆到顶部，游戏结束');
+                    state.endGame();
+                    return;
+                }
+            } else {
+                e._overflowTimer = null; // 球离开危险区，重置计时
+            }
+        }
     }
 
     // ─────────────────────────────────────────

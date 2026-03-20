@@ -97,12 +97,26 @@ class Game {
             this.systems.narrative?.showMilestoneMessage(milestone);
         });
 
-        // 监听游戏结束事件，显示重启/分享按钮
+        // 监听游戏结束事件，显示失败遮罩 + 战绩统计
         this.systems.gameState.addEventListener('gameEnded', () => {
+            const stats = this.systems.gameState.getGameStats();
+            const overlay = document.getElementById('gameover-overlay');
+            const statsEl = document.getElementById('gameover-stats');
+            if (statsEl) {
+                statsEl.innerHTML =
+                    `⏱ 坚持时间：${stats.playTime}<br>` +
+                    `🧬 最高进化：阶段 ${stats.maxEvolution}<br>` +
+                    `💥 合并次数：${stats.totalMerges}<br>` +
+                    `🏆 得分：${stats.score}`;
+            }
+            if (overlay) overlay.style.display = 'flex';
+
+            // 显示重启/分享按钮，并移入失败遮罩内
             const r = document.getElementById('restart-game');
             const s = document.getElementById('share-game');
-            if (r) r.style.display = 'inline-block';
-            if (s) s.style.display = 'inline-block';
+            const content = document.getElementById('gameover-content');
+            if (r) { r.style.display = 'inline-block'; content?.appendChild(r); }
+            if (s) { s.style.display = 'inline-block'; content?.appendChild(s); }
         });
 
         // 监听 finaleTriggered 事件，调用 Narrative 显示结局

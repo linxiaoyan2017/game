@@ -86,6 +86,11 @@ export class Renderer {
     update(deltaTime) {
         this.clear();
         this.renderBackground();
+
+        // 非游戏进行中状态，只画背景，不画实体
+        const playing = this.systems?.gameState?.isPlaying();
+        if (!playing) return;
+
         this.renderEntities();
         this.updateAndRenderParticles(deltaTime);
         this.renderDropIndicator();

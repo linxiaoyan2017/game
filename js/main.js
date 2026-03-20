@@ -242,18 +242,34 @@ class Game {
     _updateStageDisplay(stage) {
         if (!stage) return;
         const maxStage = this.systems.gameState.currentMaxEvolutionStage;
-        const targetStage = Math.max(stage, maxStage); // 始终显示最高已达到阶段
+        const targetStage = Math.max(stage, maxStage);
 
-        // 从进化链里取名字
+        // 从进化链里用 id 匹配
         const chain = this.systems.aiEvolution?.evolutionChain;
-        const stageData = chain?.find(s => s.stage === targetStage);
-        const stageName = stageData?.name || `阶段 ${targetStage}`;
-        const emoji     = stageData?.emoji || '🤖';
+        const stageData = chain?.find(s => s.id === targetStage);
+        const displayName = stageData?.displayName || `进化体 ${targetStage}`;
+        const emoji       = stageData?.emoji || '🤖';
+
+        // 进化等级对应的氛围前缀
+        const prefixes = {
+            1:  '📡 初始化中',
+            2:  '⚡ 数据汇聚',
+            3:  '🔬 算力觉醒',
+            4:  '🦿 机械崛起',
+            5:  '🌐 意识融合',
+            6:  '🧬 深度进化',
+            7:  '🌩️ 系统掌控',
+            8:  '🛸 超维突破',
+            9:  '🌌 宇宙感知',
+            10: '♾️ 无限扩张',
+            11: '👑 神格降临',
+        };
+        const prefix = prefixes[targetStage] || '🤖 进化中';
 
         const el = document.getElementById('current-stage');
         if (el) {
-            el.textContent = `${emoji} 阶段 ${targetStage}: ${stageName}`;
-            // 短暂高亮提示玩家升级了
+            el.textContent = `${prefix} · ${emoji} ${displayName}`;
+            // 升级时高亮闪烁
             el.style.color = '#ffffff';
             el.style.textShadow = '0 0 12px #00ffff, 0 0 24px #00ffff';
             clearTimeout(this._stageDisplayTimer);

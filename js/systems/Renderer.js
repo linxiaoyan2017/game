@@ -17,6 +17,10 @@ export class Renderer {
         // 悬停脉冲动画状态（每个实体单独记录）
         this._hoverPulses = new Map();
 
+        // 阶段图片缓存：{ 1: Image, 2: Image, ... }
+        this._stageImages = {};
+        this._loadStageImages();
+
         // 背景渐变色（随环境变化）
         this.bgColors = [
             ['#0a0a1a', '#0d1b2a'],   // 1: 电路板 - 深蓝黑
@@ -112,8 +116,23 @@ export class Renderer {
     }
 
     async loadSprites() {
-        // Emoji渲染不需要图片资源
-        console.log('✅ 使用Emoji精灵，无需加载');
+        console.log('✅ 精灵加载完成（图片已在构造时异步预加载）');
+    }
+
+    // 预加载所有阶段图片（有则用，无则降级 Emoji）
+    _loadStageImages() {
+        for (let i = 1; i <= 11; i++) {
+            const img = new Image();
+            const path = `./assets/sprites/stages/stage_${String(i).padStart(2, '0')}.png`;
+            img.onload  = () => {
+                this._stageImages[i] = img;
+                console.log(`🖼️ 阶段 ${i} 图片加载成功`);
+            };
+            img.onerror = () => {
+                // 静默失败，降级到 Emoji
+            };
+            img.src = path;
+        }
     }
 
     // ─────────────────────────────────────────
@@ -436,11 +455,22 @@ export class Renderer {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Emoji
-        ctx.font = `${r * 0.9}px serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(emoji, 0, 0);
+        // 图片 or Emoji（有图用图，无图降级 Emoji）
+        const stageImg = entity.stage ? this._stageImages[entity.stage] : null;
+        if (stageImg) {
+            // 圆形裁剪后绘制图片
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(0, 0, r, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(stageImg, -r, -r, r * 2, r * 2);
+            ctx.restore();
+        } else {
+            ctx.font = `${r * 0.9}px serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(emoji, 0, 0);
+        }
 
         // 名称标签
         if (radius >= 30) {
@@ -484,8 +514,10 @@ export class Renderer {
     // 合并粒子效果
     // ─────────────────────────────────────────
     spawnMergeParticles(x, y, color = '#00ff88') {
-        if (this.qualityLevel === 'low') return;
-        const count = this.qualityLevel === 'high' ? 20 : 10;
+        // 各质量等级均保留粒子效果，只调整数量
+        const count = this.qualityLevel === 'high' ? 20
+                    : this.qualityLevel === 'medium' ? 10
+                    : 6; // low 模式也保留少量粒子
         for (let i = 0; i < count; i++) {
             const angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
             const speed = 60 + Math.random() * 120;

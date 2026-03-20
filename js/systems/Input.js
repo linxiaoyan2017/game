@@ -42,31 +42,37 @@ export class Input {
     }
 
     _onTouch(e) {
-        // 只有触摸点在 canvas 上才 preventDefault（避免阻断 UI 按钮的 click）
-        const touch = e.changedTouches[0];
-        const rect  = this.canvas.getBoundingClientRect();
-        const inCanvas = touch.clientX >= rect.left && touch.clientX <= rect.right
-                      && touch.clientY >= rect.top  && touch.clientY <= rect.bottom;
+        // 如果触摸目标是按钮或其他可交互 UI 元素，不拦截，让 click 正常触发
+        const target = e.target;
+        const isUIElement = target.tagName === 'BUTTON'
+            || target.closest('button')
+            || target.id === 'volume-btn'
+            || target.closest('#control-panel')
+            || target.closest('#info-panel');
 
-        if (inCanvas) {
-            e.preventDefault(); // 只在 canvas 区域内阻止默认行为
-            const pos = this._getCanvasPos(touch.clientX, touch.clientY);
-            this.dropX = pos.x;
-            this._trySpawn(pos.x, pos.y);
-        }
-        // 触摸在 UI 按钮上时不拦截，让 click 事件正常触发
+        if (isUIElement) return;
+
+        // canvas 区域内的触摸：阻止默认滚动行为，触发实体生成
+        e.preventDefault();
+        const touch = e.changedTouches[0];
+        const pos = this._getCanvasPos(touch.clientX, touch.clientY);
+        this.dropX = pos.x;
+        this._trySpawn(pos.x, pos.y);
     }
 
     _onTouchMove(e) {
+        const target = e.target;
+        const isUIElement = target.tagName === 'BUTTON'
+            || target.closest('button')
+            || target.closest('#control-panel')
+            || target.closest('#info-panel');
+
+        if (isUIElement) return;
+
+        e.preventDefault();
         const touch = e.changedTouches[0];
-        const rect  = this.canvas.getBoundingClientRect();
-        const inCanvas = touch.clientX >= rect.left && touch.clientX <= rect.right
-                      && touch.clientY >= rect.top  && touch.clientY <= rect.bottom;
-        if (inCanvas) {
-            e.preventDefault();
-            const pos = this._getCanvasPos(touch.clientX, touch.clientY);
-            this.dropX = pos.x;
-        }
+        const pos = this._getCanvasPos(touch.clientX, touch.clientY);
+        this.dropX = pos.x;
     }
 
     _trySpawn(x, y) {

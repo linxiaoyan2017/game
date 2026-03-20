@@ -70,6 +70,10 @@ body {
   background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(15, 52, 96, 0.8) 100%);
   cursor: crosshair;
   transition: box-shadow 0.3s ease;
+  /* 移动端自适应：不超出屏幕 */
+  max-width: 100vw;
+  max-height: 100vh;
+  touch-action: none; /* 防止移动端滑动干扰 */
 }
 
 #game-canvas:hover {

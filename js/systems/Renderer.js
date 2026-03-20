@@ -33,29 +33,38 @@ export class Renderer {
     setupCanvas() {
         const dpr = window.devicePixelRatio || 1;
 
-        // 先读取 CSS 锁定的显示尺寸（不受 canvas.width 属性影响）
-        // 通过临时清除 canvas.style 拿到真实布局尺寸
-        const prevStyleW = this.canvas.style.width;
-        const prevStyleH = this.canvas.style.height;
-        this.canvas.style.width  = '';
-        this.canvas.style.height = '';
-        const rect = this.canvas.getBoundingClientRect();
-        if (rect.width === 0) {
-            // DOM 还没布局好，恢复并跳过
-            this.canvas.style.width  = prevStyleW;
-            this.canvas.style.height = prevStyleH;
-            return;
+        // 计算可用尺寸：桌面最大 500×700，移动端填满屏幕
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+        const isMobile = screenW <= 768;
+
+        let logicalW, logicalH;
+        if (isMobile) {
+            // 移动端：全屏，留出顶部信息栏和底部按钮的空间
+            logicalW = screenW;
+            logicalH = screenH;
+        } else {
+            // 桌面端：限制最大尺寸，保持比例
+            const maxW = Math.min(screenW * 0.65, 520);
+            const maxH = Math.min(screenH * 0.92, 750);
+            logicalW = maxW;
+            logicalH = maxH;
         }
 
+        logicalW = Math.floor(logicalW);
+        logicalH = Math.floor(logicalH);
+
+        if (logicalW === 0 || logicalH === 0) return;
+
         // 先把 CSS display 尺寸锁死，防止后续 canvas.width 变化撑大画布
-        this.logicalWidth  = rect.width;
-        this.logicalHeight = rect.height;
-        this.canvas.style.width  = rect.width  + 'px';
-        this.canvas.style.height = rect.height + 'px';
+        this.logicalWidth  = logicalW;
+        this.logicalHeight = logicalH;
+        this.canvas.style.width  = logicalW + 'px';
+        this.canvas.style.height = logicalH + 'px';
 
         // 设置高 DPI 缓冲区
-        this.canvas.width  = Math.round(rect.width  * dpr);
-        this.canvas.height = Math.round(rect.height * dpr);
+        this.canvas.width  = Math.round(logicalW * dpr);
+        this.canvas.height = Math.round(logicalH * dpr);
         this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // 用 setTransform 而非 scale，避免叠加
 
         // 同步物理边界

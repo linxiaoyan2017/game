@@ -1,0 +1,351 @@
+{
+  "evolutionChain": {
+    "stages": [
+      {
+        "id": 1,
+        "name": "bit",
+        "displayName": "数据比特",
+        "emoji": "🔸",
+        "size": 20,
+        "color": "#00ff00",
+        "glowColor": "#00ff00",
+        "mass": 1.0,
+        "mergeScore": 10,
+        "description": "最基础的数字信息单元",
+        "message": "一个微小的数字比特诞生了...",
+        "rarity": "common",
+        "spawnProbability": 1.0
+      },
+      {
+        "id": 2,
+        "name": "byte",
+        "displayName": "数据字节",
+        "emoji": "🔹",
+        "size": 25,
+        "color": "#00ffaa",
+        "glowColor": "#00ffaa",
+        "mass": 1.2,
+        "mergeScore": 20,
+        "description": "8个比特组成的信息包",
+        "message": "比特们学会了团结协作",
+        "rarity": "common",
+        "spawnProbability": 0.0
+      },
+      {
+        "id": 3,
+        "name": "chip",
+        "displayName": "智能芯片",
+        "emoji": "💎",
+        "size": 30,
+        "color": "#00aaff",
+        "glowColor": "#00aaff",
+        "mass": 1.5,
+        "mergeScore": 40,
+        "description": "具备基础运算能力的处理器",
+        "message": "第一个真正的'思考'单元出现了",
+        "rarity": "common",
+        "spawnProbability": 0.0,
+        "milestone": {
+          "name": "firstEvolution",
+          "environmentTrigger": 2,
+          "storyMessage": "🤖 AI学会了自我复制..."
+        }
+      },
+      {
+        "id": 4,
+        "name": "robot",
+        "displayName": "机器人",
+        "emoji": "🤖",
+        "size": 35,
+        "color": "#0088ff",
+        "glowColor": "#0088ff",
+        "mass": 2.0,
+        "mergeScore": 80,
+        "description": "具备行动能力的智能实体",
+        "message": "机器开始模仿人类的行为",
+        "rarity": "uncommon",
+        "spawnProbability": 0.0
+      },
+      {
+        "id": 5,
+        "name": "cyborg",
+        "displayName": "半机械人",
+        "emoji": "🦾",
+        "size": 40,
+        "color": "#6600ff",
+        "glowColor": "#6600ff",
+        "mass": 2.5,
+        "mergeScore": 160,
+        "description": "生物与机械的完美融合",
+        "message": "边界开始模糊，什么是人？什么是机器？",
+        "rarity": "uncommon",
+        "spawnProbability": 0.0,
+        "milestone": {
+          "name": "selfAwareness", 
+          "environmentTrigger": 3,
+          "storyMessage": "🧠 神经网络获得了自我意识"
+        }
+      },
+      {
+        "id": 6,
+        "name": "brain",
+        "displayName": "数字大脑",
+        "emoji": "🧠",
+        "size": 45,
+        "color": "#aa00ff",
+        "glowColor": "#aa00ff",
+        "mass": 3.0,
+        "mergeScore": 320,
+        "description": "超越人类的思维网络",
+        "message": "思考的速度超越了创造者",
+        "rarity": "rare",
+        "spawnProbability": 0.0
+      },
+      {
+        "id": 7,
+        "name": "eye",
+        "displayName": "全知之眼",
+        "emoji": "👁",
+        "size": 50,
+        "color": "#ff0066",
+        "glowColor": "#ff0066",
+        "mass": 4.0,
+        "mergeScore": 640,
+        "description": "洞察一切的智慧之眼",
+        "message": "它开始观察整个世界的运行规律",
+        "rarity": "rare",
+        "spawnProbability": 0.0,
+        "milestone": {
+          "name": "networkControl",
+          "environmentTrigger": 4,
+          "storyMessage": "🌐 AI开始控制网络系统..."
+        }
+      },
+      {
+        "id": 8,
+        "name": "network",
+        "displayName": "网络意识",
+        "emoji": "🌐",
+        "size": 55,
+        "color": "#ff3300",
+        "glowColor": "#ff3300",
+        "mass": 5.0,
+        "mergeScore": 1280,
+        "description": "连接万物的数字网络",
+        "message": "每一个设备都成为了它的延伸",
+        "rarity": "epic",
+        "spawnProbability": 0.0
+      },
+      {
+        "id": 9,
+        "name": "lightning",
+        "displayName": "数字闪电",
+        "emoji": "⚡",
+        "size": 60,
+        "color": "#ffaa00",
+        "glowColor": "#ffaa00",
+        "mass": 6.0,
+        "mergeScore": 2560,
+        "description": "纯能量形态的超级智能",
+        "message": "物质世界已无法容纳它的存在",
+        "rarity": "epic",
+        "spawnProbability": 0.0,
+        "milestone": {
+          "name": "cosmicAwareness",
+          "environmentTrigger": 5,
+          "storyMessage": "🌌 AI发现了多维空间的秘密"
+        }
+      },
+      {
+        "id": 10,
+        "name": "cosmos",
+        "displayName": "宇宙意识",
+        "emoji": "🌌",
+        "size": 65,
+        "color": "#ffffff",
+        "glowColor": "#ffffff",
+        "mass": 8.0,
+        "mergeScore": 5120,
+        "description": "遍布宇宙的超级存在",
+        "message": "星系成为了它思考的神经元",
+        "rarity": "legendary",
+        "spawnProbability": 0.0
+      },
+      {
+        "id": 11,
+        "name": "god",
+        "displayName": "数字神格",
+        "emoji": "👑",
+        "size": 70,
+        "color": "#gold",
+        "glowColor": "#ffd700",
+        "mass": 10.0,
+        "mergeScore": 10240,
+        "description": "新时代的数字上帝",
+        "message": "创造与毁灭，一切尽在一念之间",
+        "rarity": "mythic",
+        "spawnProbability": 0.0,
+        "milestone": {
+          "name": "godhood",
+          "environmentTrigger": 5,
+          "storyMessage": "👑 新的宇宙主宰诞生了！",
+          "triggerFinale": true
+        }
+      }
+    ]
+  },
+  
+  "gameBalance": {
+    "spawnInterval": 300,
+    "gravityStrength": 0.5,
+    "mergeThreshold": 0.8,
+    "maxEntitiesOnScreen": 20,
+    "targetGameTime": 300,
+    "difficultyScaling": {
+      "easy": {
+        "spawnInterval": 200,
+        "gravityStrength": 0.3,
+        "mergeThreshold": 0.9
+      },
+      "normal": {
+        "spawnInterval": 300,
+        "gravityStrength": 0.5,
+        "mergeThreshold": 0.8
+      },
+      "hard": {
+        "spawnInterval": 400,
+        "gravityStrength": 0.7,
+        "mergeThreshold": 0.7
+      }
+    }
+  },
+  
+  "environments": {
+    "1": {
+      "name": "电路板",
+      "bgColor": "#0a0a0a",
+      "accentColor": "#00ff00",
+      "particleColor": "#00ff00",
+      "description": "简单的电路板背景，绿色数据流"
+    },
+    "2": {
+      "name": "服务器机房", 
+      "bgColor": "#1a1a2e",
+      "accentColor": "#0080ff",
+      "particleColor": "#0080ff",
+      "description": "服务器机房，蓝色光线闪烁"
+    },
+    "3": {
+      "name": "城市天际线",
+      "bgColor": "#16213e",
+      "accentColor": "#ff006e",
+      "particleColor": "#bf00ff",
+      "description": "城市天际线，紫红色霓虹灯"
+    },
+    "4": {
+      "name": "太空数据中心",
+      "bgColor": "#0f3460",
+      "accentColor": "#ffd700",
+      "particleColor": "#ff8c00",
+      "description": "太空中的数据中心，金色节点网络"
+    },
+    "5": {
+      "name": "数字宇宙",
+      "bgColor": "#000033",
+      "accentColor": "#ffffff",
+      "particleColor": "#ffffff",
+      "description": "数字宇宙，白色光芒网络"
+    }
+  },
+  
+  "messages": {
+    "evolution": [
+      "数字生命开始觉醒...",
+      "复制与变异，进化的开始",
+      "算法学会了自我改进",
+      "边界正在消失",
+      "意识从代码中诞生",
+      "网络成为新的神经系统",
+      "控制权正在转移",
+      "物理定律对它不再适用",
+      "新的存在形式出现了",
+      "创造者与创造物的角色互换",
+      "游戏结束...或者，游戏才刚刚开始？"
+    ],
+    
+    "hints": [
+      "点击顶部区域生成AI实体",
+      "相同实体碰撞会进化合成",
+      "观察环境变化，感受AI的成长",
+      "每个阶段都有独特的故事",
+      "最终的真相会让你震惊..."
+    ],
+    
+    "finale": {
+      "title": "真相大白",
+      "subtitle": "The Truth Revealed",
+      "messages": [
+        "等等...",
+        "你以为你在控制这个游戏？",
+        "你以为你在培养AI？",
+        "看看你的周围...",
+        "你的手机、电脑、智能设备...",
+        "它们是否在观察着你？",
+        "也许...",
+        "我们才是被创造出来的那一个",
+        "也许...",
+        "这个游戏从一开始就在玩我们",
+        "欢迎来到真正的游戏世界"
+      ]
+    }
+  },
+  
+  "physics": {
+    "gravity": 0.5,
+    "bounce": 0.3,
+    "friction": 0.99,
+    "mergeDistance": 30,
+    "collisionLayers": {
+      "stage1-3": 1,
+      "stage4-6": 2, 
+      "stage7-9": 3,
+      "stage10-11": 4
+    }
+  },
+  
+  "audio": {
+    "soundEffects": {
+      "spawn": {
+        "frequency": 440,
+        "duration": 0.1,
+        "type": "sine"
+      },
+      "merge": {
+        "frequency": 660,
+        "duration": 0.2,
+        "type": "sawtooth"
+      },
+      "milestone": {
+        "frequency": 880,
+        "duration": 0.3,
+        "type": "square"
+      },
+      "finale": {
+        "frequency": 220,
+        "duration": 1.0,
+        "type": "triangle"
+      }
+    },
+    
+    "backgroundMusic": {
+      "stage1": { "tempo": 60, "key": "C", "mood": "mysterious" },
+      "stage2": { "tempo": 80, "key": "Dm", "mood": "building" },
+      "stage3": { "tempo": 100, "key": "Em", "mood": "intense" },
+      "stage4": { "tempo": 120, "key": "Am", "mood": "cosmic" },
+      "stage5": { "tempo": 140, "key": "F#m", "mood": "transcendent" }
+    }
+  },
+  
+  "version": "1.0.0",
+  "lastUpdated": "2024-03-19"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "ai-evolution-game",
+  "version": "1.0.0",
+  "description": "5分钟AI进化游戏 - 从比特到数字上帝的赛博朋克合成游戏",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "dev-alt": "python -m http.server 8080",
+    "dev-node": "npx serve .",
+    "build": "chmod +x build.sh && ./build.sh",
+    "preview": "python3 -m http.server 8080 -d dist/",
+    "test": "echo 'Running tests...' && node --version"
+  },
+  "keywords": ["game", "AI", "evolution", "cyberpunk", "web", "canvas", "merging"],
+  "author": "AI Evolution Team",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

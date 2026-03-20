@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI进化游戏 - 5分钟内从比特进化到数字上帝的赛博朋克合成游戏">
+    <meta name="keywords" content="AI游戏,合成游戏,赛博朋克,进化,浏览器游戏">
+    
+    <!-- Open Graph 分享优化 -->
+    <meta property="og:title" content="AI进化 - 从比特到上帝">
+    <meta property="og:description" content="体验5分钟从数字比特进化为宇宙主宰的史诗之旅">
+    <meta property="og:type" content="game">
+    <meta property="og:url" content="https://ai-evolution.game">
+    <meta property="og:image" content="./assets/sprites/og-preview.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI进化 - 从比特到上帝">
+    <meta name="twitter:description" content="体验5分钟从数字比特进化为宇宙主宰的史诗之旅">
+    <meta name="twitter:image" content="./assets/sprites/twitter-preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/sprites/favicon.svg">
+    <link rel="icon" type="image/png" href="./assets/sprites/favicon.png">
+    
+    <title>AI进化 - 从比特到上帝</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <!-- 游戏主界面 -->
+    <div id="game-container">
+        <!-- 游戏Canvas -->
+        <canvas id="game-canvas" width="800" height="600">
+            您的浏览器不支持HTML5 Canvas，请升级浏览器以获得最佳游戏体验。
+        </canvas>
+        
+        <!-- 游戏UI覆盖层 -->
+        <div id="ui-overlay">
+            <!-- 游戏信息面板 -->
+            <div id="info-panel">
+                <div id="current-stage">阶段 1: 数字比特</div>
+                <div id="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <!-- 消息显示区域 -->
+            <div id="message-area">
+                <div id="evolution-message"></div>
+                <div id="narrative-message"></div>
+            </div>
+            
+            <!-- 音量控制 -->
+            <button id="volume-btn" title="静音/开启">🔊</button>
+
+            <!-- 控制按钮 -->
+            <div id="control-panel">
+                <button id="start-game" class="cyberpunk-btn">开始进化</button>
+                <button id="restart-game" class="cyberpunk-btn" style="display:none;">重新开始</button>
+                <button id="share-game" class="cyberpunk-btn" style="display:none;">分享成就</button>
+            </div>
+        </div>
+        
+        <!-- 加载屏幕 -->
+        <div id="loading-screen">
+            <div id="loading-animation">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p>正在初始化AI矩阵...</p>
+            </div>
+        </div>
+        
+        <!-- 最终场景覆盖层 -->
+        <div id="finale-overlay" style="display:none;">
+            <div id="finale-content">
+                <h1>真相大白</h1>
+                <p id="finale-text"></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 音频元素 -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="./assets/sounds/cyberpunk-ambient.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- 游戏脚本（加版本号防缓存）-->
+    <script type="module" src="./js/main.js?v=3"></script>
+</body>
+</html>

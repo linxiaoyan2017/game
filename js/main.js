@@ -86,6 +86,11 @@ class Game {
             });
         }
 
+        // 窗口 resize 时重新对齐 UI
+        window.addEventListener('resize', () => {
+            this.systems.renderer.setupCanvas();
+        });
+
         // 监听环境变化事件，同步给渲染器 + 触发环境音效
         this.systems.gameState.addEventListener('environmentChanged', (env) => {
             this.systems.renderer.setEnvironment(env);

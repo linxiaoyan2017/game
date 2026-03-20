@@ -72,7 +72,43 @@ export class Renderer {
             this.systems.physics.setBounds(0, this.logicalWidth, 0, this.logicalHeight);
         }
 
+        // 同步 info-panel 和 countdown-timer 宽度与 canvas 对齐
+        this._syncUIPosition();
+
         console.log(`✅ Canvas 初始化: ${this.logicalWidth}×${this.logicalHeight} (dpr=${dpr})`);
+    }
+
+    // 让顶部 UI 条与 canvas 左右完全对齐
+    _syncUIPosition() {
+        // 等 canvas 完成布局后取真实位置
+        requestAnimationFrame(() => {
+            const rect = this.canvas.getBoundingClientRect();
+            const containerRect = this.canvas.parentElement?.getBoundingClientRect?.() || { left: 0 };
+
+            // canvas 相对于 #ui-overlay（即 #game-container）的偏移
+            const offsetLeft  = rect.left  - containerRect.left;
+            const offsetTop   = rect.top   - containerRect.top;
+
+            const panel   = document.getElementById('info-panel');
+            const timer   = document.getElementById('countdown-timer');
+            const volBtn  = document.getElementById('volume-btn');
+
+            if (panel) {
+                panel.style.left   = offsetLeft + 'px';
+                panel.style.top    = offsetTop  + 'px';
+                panel.style.width  = rect.width + 'px';
+                panel.style.right  = 'auto'; // 覆盖 CSS 中的 right:0
+            }
+            if (timer) {
+                timer.style.left   = 'auto';
+                timer.style.right  = (containerRect.right - rect.right) + 'px';
+                timer.style.top    = offsetTop + 'px';
+            }
+            if (volBtn) {
+                volBtn.style.right = (containerRect.right - rect.right + 8) + 'px';
+                volBtn.style.top   = (offsetTop + rect.height - 44) + 'px'; // canvas 底部附近
+            }
+        });
     }
 
     async loadSprites() {

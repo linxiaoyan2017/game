@@ -72,10 +72,11 @@ export class GameState {
     // === 游戏阶段管理 ===
     
     startGame() {
-        this.setState('gamePhase', 'playing');
-        this.setState('gameStartTime', Date.now());
-        this.setState('isGameActive', true);
+        // 先 reset 清空数据，再设置 playing 状态
         this.reset();
+        this.gamePhase    = 'playing';
+        this.isGameActive = true;
+        this.gameStartTime = Date.now();
         this.emitEvent('gameStarted');
     }
     
@@ -334,6 +335,10 @@ export class GameState {
     // === 重置和清理 ===
     
     reset() {
+        // 重置游戏阶段为 idle，停止渲染和物理
+        this.gamePhase   = 'idle';
+        this.isGameActive = false;
+
         // 保留基本游戏状态，重置游戏进度
         this.setState('currentLevel', 0);
         this.setState('totalEntitiesCreated', 0);

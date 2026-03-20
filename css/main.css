@@ -196,6 +196,7 @@ body {
 
 /* === 赛博朋克按钮 === */
 .cyberpunk-btn {
+  white-space: nowrap;
   background: transparent;
   border: 2px solid var(--neon-cyan);
   color: var(--text-accent);
@@ -673,6 +674,7 @@ body[data-env] #home-screen {
   letter-spacing: 3px;
   position: relative;
   overflow: hidden;
+  white-space: nowrap; /* 禁止文字换行 */
 }
 
 /* 扫光动画 */

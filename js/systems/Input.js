@@ -42,18 +42,31 @@ export class Input {
     }
 
     _onTouch(e) {
-        e.preventDefault();
+        // 只有触摸点在 canvas 上才 preventDefault（避免阻断 UI 按钮的 click）
         const touch = e.changedTouches[0];
-        const pos = this._getCanvasPos(touch.clientX, touch.clientY);
-        this.dropX = pos.x;
-        this._trySpawn(pos.x, pos.y);
+        const rect  = this.canvas.getBoundingClientRect();
+        const inCanvas = touch.clientX >= rect.left && touch.clientX <= rect.right
+                      && touch.clientY >= rect.top  && touch.clientY <= rect.bottom;
+
+        if (inCanvas) {
+            e.preventDefault(); // 只在 canvas 区域内阻止默认行为
+            const pos = this._getCanvasPos(touch.clientX, touch.clientY);
+            this.dropX = pos.x;
+            this._trySpawn(pos.x, pos.y);
+        }
+        // 触摸在 UI 按钮上时不拦截，让 click 事件正常触发
     }
 
     _onTouchMove(e) {
-        e.preventDefault();
         const touch = e.changedTouches[0];
-        const pos = this._getCanvasPos(touch.clientX, touch.clientY);
-        this.dropX = pos.x;
+        const rect  = this.canvas.getBoundingClientRect();
+        const inCanvas = touch.clientX >= rect.left && touch.clientX <= rect.right
+                      && touch.clientY >= rect.top  && touch.clientY <= rect.bottom;
+        if (inCanvas) {
+            e.preventDefault();
+            const pos = this._getCanvasPos(touch.clientX, touch.clientY);
+            this.dropX = pos.x;
+        }
     }
 
     _trySpawn(x, y) {

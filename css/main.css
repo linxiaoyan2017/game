@@ -99,7 +99,7 @@ body {
   position: absolute;
   top: 20px;
   left: 20px;
-  right: 20px;
+  right: 110px; /* 为右侧倒计时留出空间 */
   height: 60px;
   background: linear-gradient(90deg, rgba(0, 255, 255, 0.1), rgba(191, 0, 255, 0.1));
   border: 1px solid var(--ui-border);
@@ -376,6 +376,316 @@ body {
   padding: 12px 20px;
   border-radius: 6px;
   background: rgba(0,255,255,0.05);
+}
+
+/* === 倒计时 === */
+#countdown-timer {
+  position: absolute;
+  top: 20px;  /* 与 info-panel 顶部对齐 */
+  right: 20px;
+  display: none; /* 游戏开始前隐藏 */
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(0,255,255,0.3);
+  border-radius: 8px;
+  padding: 6px 14px;
+  pointer-events: none;
+  z-index: 20;
+  backdrop-filter: blur(6px);
+  min-width: 68px;
+}
+
+#countdown-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(0,255,255,0.5);
+  margin-bottom: 1px;
+}
+
+#countdown-value {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan);
+  letter-spacing: 2px;
+}
+
+/* 最后30秒变红警告 */
+#countdown-timer.urgent {
+  border-color: rgba(255,0,60,0.6);
+  animation: urgentPulse 0.8s ease-in-out infinite;
+}
+#countdown-timer.urgent #countdown-value {
+  color: #ff003c;
+  text-shadow: 0 0 12px #ff003c;
+}
+#countdown-timer.urgent #countdown-label {
+  color: rgba(255,0,60,0.6);
+}
+
+@keyframes urgentPulse {
+  0%,100% { box-shadow: 0 0 0px rgba(255,0,60,0); }
+  50%      { box-shadow: 0 0 14px rgba(255,0,60,0.5); }
+}
+
+/* 游戏进行中显示倒计时 */
+body[data-env] #countdown-timer {
+  display: flex;
+}
+
+/* === 分享弹窗 === */
+#share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(4px);
+}
+
+#share-modal {
+  background: rgba(10,10,30,0.95);
+  border: 1px solid var(--neon-cyan);
+  border-radius: 12px;
+  padding: 32px 28px;
+  width: min(90vw, 380px);
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,255,255,0.2), 0 0 60px rgba(0,255,255,0.08);
+  animation: fadeIn 0.3s ease;
+}
+
+#share-modal-title {
+  font-size: 18px;
+  color: var(--neon-cyan);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+#share-modal-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+#share-link-box {
+  background: rgba(0,255,255,0.05);
+  border: 1px solid rgba(0,255,255,0.25);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  word-break: break-all;
+}
+
+#share-link-text {
+  font-size: 12px;
+  color: var(--neon-cyan);
+  font-family: monospace;
+  opacity: 0.9;
+}
+
+#share-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#share-copy-btn {
+  background: rgba(0,255,255,0.12);
+  min-width: 120px;
+}
+
+#share-copy-btn.copied {
+  background: rgba(57,255,20,0.15);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+}
+
+/* ═══════════════════════════════════════════
+   首页视觉设计
+═══════════════════════════════════════════ */
+#home-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#home-title-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* 偏上一些，给底部按钮让位 */
+  margin-top: -60px;
+}
+
+/* 顶部英文副标 */
+#home-subtitle-top {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--neon-cyan);
+  opacity: 0.7;
+  font-family: 'Courier New', monospace;
+  animation: fadeInDown 1s ease both;
+}
+
+/* ── 主标题：合成大主宰 ── */
+#home-title {
+  font-size: clamp(36px, 10vw, 72px);
+  font-weight: 900;
+  letter-spacing: 6px;
+  line-height: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #00ffff 40%, #bf00ff 80%, #ff006e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(0,255,255,0.6)) drop-shadow(0 0 40px rgba(191,0,255,0.4));
+  animation: titleAppear 1.2s cubic-bezier(0.22,1,0.36,1) both, titleGlow 3s ease-in-out 1.2s infinite;
+  position: relative;
+}
+
+/* 标题故障闪烁层 */
+#home-title::before {
+  content: '合成大主宰';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff006e, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glitchA 4s infinite;
+  clip-path: polygon(0 20%, 100% 20%, 100% 35%, 0 35%);
+  opacity: 0;
+}
+#home-title::after {
+  content: '合成大主宰';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #bf00ff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glitchB 4s infinite;
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  opacity: 0;
+}
+
+@keyframes glitchA {
+  0%,94%,100% { opacity:0; transform: translate(0); }
+  95%          { opacity:0.8; transform: translate(-3px, 1px); }
+  97%          { opacity:0.8; transform: translate(3px, -1px); }
+}
+@keyframes glitchB {
+  0%,92%,100% { opacity:0; transform: translate(0); }
+  93%          { opacity:0.7; transform: translate(3px, 2px); }
+  96%          { opacity:0.7; transform: translate(-2px, -1px); }
+}
+
+@keyframes titleAppear {
+  from { opacity:0; transform: scale(0.7) translateY(20px); filter: drop-shadow(0 0 0px transparent); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+@keyframes titleGlow {
+  0%,100% { filter: drop-shadow(0 0 18px rgba(0,255,255,0.6)) drop-shadow(0 0 40px rgba(191,0,255,0.4)); }
+  50%     { filter: drop-shadow(0 0 28px rgba(0,255,255,0.9)) drop-shadow(0 0 60px rgba(191,0,255,0.7)); }
+}
+
+/* 英文副标 */
+#home-title-en {
+  font-size: 12px;
+  letter-spacing: 8px;
+  color: rgba(255,255,255,0.35);
+  font-family: 'Courier New', monospace;
+  animation: fadeInDown 1.4s ease both;
+}
+
+/* 描述文字 */
+#home-desc {
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 1px;
+  margin-top: 6px;
+  animation: fadeInDown 1.6s ease both;
+}
+
+/* ── 进化链预览 ── */
+#home-evo-chain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  animation: fadeInDown 1.8s ease both;
+}
+
+#home-evo-chain span {
+  font-size: 22px;
+  filter: drop-shadow(0 0 6px rgba(0,255,255,0.5));
+  animation: evoFloat 2.5s ease-in-out infinite;
+}
+#home-evo-chain span:nth-child(1) { animation-delay: 0s; }
+#home-evo-chain span:nth-child(3) { animation-delay: 0.3s; }
+#home-evo-chain span:nth-child(5) { animation-delay: 0.6s; }
+#home-evo-chain span:nth-child(7) { animation-delay: 0.9s; }
+#home-evo-chain span:nth-child(9) { animation-delay: 1.2s; }
+
+.chain-arrow {
+  font-size: 12px !important;
+  color: var(--neon-cyan);
+  opacity: 0.5;
+  animation: none !important;
+  filter: none !important;
+}
+
+@keyframes evoFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+@keyframes fadeInDown {
+  from { opacity:0; transform: translateY(-12px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* 游戏进行中隐藏首页 */
+body[data-env] #home-screen {
+  display: none;
+}
+
+/* ── 开始按钮升级 ── */
+#start-game {
+  font-size: 15px;
+  padding: 14px 40px;
+  letter-spacing: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 扫光动画 */
+#start-game::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: btnScan 2.5s ease-in-out infinite;
+}
+@keyframes btnScan {
+  0%   { left: -100%; }
+  60%  { left: 150%; }
+  100% { left: 150%; }
 }
 
 /* === CSS3 背景环境动画 === */

@@ -172,9 +172,11 @@ class Game {
         this.systems.physics.setBounds(0, w, 0, h);
 
         this.hideStartScreen();
+        document.body.setAttribute('data-env', '1'); // 隐藏首页标题
         this.systems.gameState.startGame();
         this.systems.audio.startBackgroundMusic();
         this.systems.gameEngine.startGameLoop();
+        this._startCountdown(300); // 5分钟倒计时
         console.log('🚀 游戏开始！');
     }
 
@@ -194,76 +196,72 @@ class Game {
         const fill = document.getElementById('progress-fill');
         if (fill) fill.style.width = '0%';
 
+        // 移除 data-env，让首页标题重新显示
+        document.body.removeAttribute('data-env');
+
         // 回到首页，等用户点"开始进化"
         this.showStartScreen();
         console.log('🔄 返回首页');
     }
 
     shareGame() {
-        const stats = this.systems.gameState?.getGameStats?.() || {};
-        const maxEvo = stats.maxEvolution ?? '???';
+        const stats  = this.systems.gameState?.getGameStats?.() || {};
+        const maxEvo = stats.maxEvolution ?? '?';
         const score  = stats.score ?? 0;
-        const shareText = `🤖 我在《AI进化》中完成了 ${maxEvo} 阶进化，得分 ${score}！\n从数字比特到宇宙上帝，5分钟统治世界！`;
-        // 部署后替换为真实 URL
-        const shareUrl  = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-            ? null   // 本地不附带 url，避免分享无意义的 localhost 地址
-            : location.href;
-        const shareData = {
-            title: 'AI进化 - 从比特到上帝',
-            text: shareText,
-            ...(shareUrl ? { url: shareUrl } : {})
-        };
+        const url    = location.href;
+        const desc   = `🤖 我完成了第 ${maxEvo} 阶进化，得分 ${score}！\n从数字比特到宇宙主宰，快来挑战！`;
 
-        // 1. 优先用 Web Share API（移动端 / HTTPS 环境）
-        if (navigator.share && navigator.canShare?.(shareData)) {
-            navigator.share(shareData)
-                .then(() => console.log('✅ 分享成功'))
-                .catch(err => {
-                    if (err.name !== 'AbortError') this._fallbackShare(shareText, shareUrl);
+        // 填充弹窗内容
+        const descEl = document.getElementById('share-modal-desc');
+        const linkEl = document.getElementById('share-link-text');
+        if (descEl) descEl.textContent = desc;
+        if (linkEl) linkEl.textContent = url;
+
+        // 显示弹窗
+        const overlay = document.getElementById('share-overlay');
+        if (overlay) overlay.style.display = 'flex';
+
+        // 复制按钮
+        const copyBtn  = document.getElementById('share-copy-btn');
+        const closeBtn = document.getElementById('share-close-btn');
+
+        if (copyBtn) {
+            // 移除旧监听避免重复绑定
+            const newCopyBtn = copyBtn.cloneNode(true);
+            copyBtn.parentNode.replaceChild(newCopyBtn, copyBtn);
+            newCopyBtn.addEventListener('click', () => {
+                navigator.clipboard?.writeText(url).then(() => {
+                    newCopyBtn.textContent = '✅ 已复制！';
+                    newCopyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        newCopyBtn.textContent = '📋 复制链接';
+                        newCopyBtn.classList.remove('copied');
+                    }, 2000);
+                }).catch(() => {
+                    // 降级：选中文字
+                    const el = document.getElementById('share-link-text');
+                    if (el) {
+                        const range = document.createRange();
+                        range.selectNode(el);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(range);
+                    }
                 });
-        } else {
-            // 2. 降级：复制到剪贴板
-            this._fallbackShare(shareText, shareUrl);
+            });
         }
-    }
 
-    _fallbackShare(text, url) {
-        const full = url ? `${text}\n${url}` : text;
-        if (navigator.clipboard?.writeText) {
-            navigator.clipboard.writeText(full).then(() => {
-                this._showShareToast('✅ 已复制到剪贴板，快去分享吧！');
-            }).catch(() => this._showShareDialog(full));
-        } else {
-            this._showShareDialog(full);
+        if (closeBtn) {
+            const newCloseBtn = closeBtn.cloneNode(true);
+            closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+            newCloseBtn.addEventListener('click', () => {
+                if (overlay) overlay.style.display = 'none';
+            });
         }
-    }
 
-    _showShareToast(msg) {
-        // 轻量 toast，3 秒后自动消失
-        const toast = document.createElement('div');
-        toast.textContent = msg;
-        Object.assign(toast.style, {
-            position: 'fixed', bottom: '80px', left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(0,255,255,0.15)',
-            border: '1px solid #00ffff',
-            color: '#00ffff',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            fontFamily: 'monospace',
-            fontSize: '14px',
-            zIndex: '9999',
-            backdropFilter: 'blur(10px)',
-            transition: 'opacity 0.4s',
-        });
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
-    }
-
-    _showShareDialog(text) {
-        // 最后兜底：弹窗让用户手动复制
-        const msg = `请手动复制以下内容分享：\n\n${text}`;
-        prompt('分享内容（Ctrl+C 复制）：', text) !== null && console.log('用户已看到分享内容');
+        // 点遮罩背景也可关闭
+        overlay.onclick = (e) => {
+            if (e.target === overlay) overlay.style.display = 'none';
+        };
     }
 
     // ── 顶部阶段文案更新 ──
@@ -312,6 +310,46 @@ class Game {
         if (fill) {
             fill.style.width = `${Math.min((targetStage / 11) * 100, 100)}%`;
         }
+    }
+
+    // ── 倒计时 ──
+    _startCountdown(totalSeconds) {
+        // 清除旧计时器
+        if (this._countdownInterval) clearInterval(this._countdownInterval);
+
+        const timerEl = document.getElementById('countdown-timer');
+        const valueEl = document.getElementById('countdown-value');
+        let remaining  = totalSeconds;
+
+        const update = () => {
+            if (!this.isRunning) {
+                clearInterval(this._countdownInterval);
+                return;
+            }
+
+            const m = Math.floor(remaining / 60);
+            const s = remaining % 60;
+            if (valueEl) valueEl.textContent = `${m}:${String(s).padStart(2, '0')}`;
+
+            // 最后30秒红色紧急状态
+            if (timerEl) {
+                timerEl.classList.toggle('urgent', remaining <= 30);
+            }
+
+            if (remaining <= 0) {
+                clearInterval(this._countdownInterval);
+                // 时间到：触发游戏结束
+                if (this.isRunning) {
+                    console.log('⏱ 时间到！游戏结束');
+                    this.systems.gameState.endGame();
+                }
+                return;
+            }
+            remaining--;
+        };
+
+        update(); // 立即渲染第一帧
+        this._countdownInterval = setInterval(update, 1000);
     }
 
     // ── UI 控制 ──

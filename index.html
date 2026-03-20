@@ -50,14 +50,41 @@
                 <div id="narrative-message"></div>
             </div>
             
+            <!-- 倒计时 -->
+            <div id="countdown-timer">
+                <span id="countdown-label">剩余</span>
+                <span id="countdown-value">5:00</span>
+            </div>
+
             <!-- 音量控制 -->
             <button id="volume-btn" title="静音/开启">🔊</button>
 
+            <!-- 首页标题区（游戏未开始时显示） -->
+            <div id="home-screen">
+                <div id="home-title-wrap">
+                    <div id="home-subtitle-top">— CYBERPUNK AI EVOLUTION —</div>
+                    <h1 id="home-title">合成大主宰</h1>
+                    <div id="home-title-en">SYNTHETIC OVERLORD</div>
+                    <p id="home-desc">从一粒比特，进化为宇宙神明<br>你只有 5 分钟——在 AI 吞噬世界之前</p>
+                    <div id="home-evo-chain">
+                        <span title="数据比特">🔸</span>
+                        <span class="chain-arrow">→</span>
+                        <span title="智能芯片">💎</span>
+                        <span class="chain-arrow">→</span>
+                        <span title="机器人">🤖</span>
+                        <span class="chain-arrow">→</span>
+                        <span title="神经网络">🧠</span>
+                        <span class="chain-arrow">→</span>
+                        <span title="数字上帝">👑</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- 控制按钮 -->
             <div id="control-panel">
-                <button id="start-game" class="cyberpunk-btn">开始进化</button>
+                <button id="start-game" class="cyberpunk-btn">⚡ 开始进化</button>
                 <button id="restart-game" class="cyberpunk-btn" style="display:none;">重新开始</button>
-                <button id="share-game" class="cyberpunk-btn" style="display:none;">分享成就</button>
+                <button id="share-game" class="cyberpunk-btn" style="display:none;">分享游戏</button>
             </div>
         </div>
         
@@ -84,9 +111,24 @@
             </div>
         </div>
 
+        <!-- 分享弹窗 -->
+        <div id="share-overlay" style="display:none;">
+            <div id="share-modal">
+                <div id="share-modal-title">🚀 分享游戏</div>
+                <p id="share-modal-desc"></p>
+                <div id="share-link-box">
+                    <span id="share-link-text"></span>
+                </div>
+                <div id="share-actions">
+                    <button id="share-copy-btn" class="cyberpunk-btn">📋 复制链接</button>
+                    <button id="share-close-btn" class="cyberpunk-btn">关闭</button>
+                </div>
+            </div>
+        </div>
+
         <div id="finale-overlay" style="display:none;">
             <div id="finale-content">
-                <h1>真相大白</h1>
+                <h1 id="finale-title" style="opacity:0;transition:opacity 1s ease;">真相大白</h1>
                 <p id="finale-text"></p>
             </div>
         </div>

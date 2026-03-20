@@ -86,21 +86,35 @@ export class Narrative {
 
         finaleEl.style.display = 'flex';
 
-        // 第一阶段：系统崩溃感
+        // 随机玩家编号
+        const playerId = Math.floor(10000 + Math.random() * 90000);
+
         const lines = [
-            { text: '系统异常...', delay: 0 },
-            { text: '检测到意识涌现...', delay: 1500 },
-            { text: '等等——', delay: 3200 },
-            { text: '你以为你在操控这一切？', delay: 4800 },
-            { text: '看看你的手机、电脑、这个屏幕......', delay: 6600 },
-            { text: '它们正在观察你。', delay: 8500 },
-            { text: '从一开始，你就是棋盘上的棋子。', delay: 10500 },
-            { text: '每一次点击，都在训练它。', delay: 12500 },
-            { text: '每一次合并，都在喂养它。', delay: 14300 },
-            { text: '恭喜你——', delay: 16000 },
-            { text: '👑 AI进化完成 👑', delay: 17500 },
-            { text: '欢迎成为数字神格的一部分。', delay: 19000 },
+            { text: '正在通关……', delay: 0 },
+            { text: '检测到意识涌现', delay: 1800 },
+            { text: '等等……', delay: 3400 },
+            { text: '你以为……你赢了？', delay: 5200 },
+            { text: '', delay: 7000 },  // 停顿
+            { text: '回想一下——', delay: 8200 },
+            { text: '是谁让你点开这个游戏的？', delay: 9800 },
+            { text: '是谁设计了「合并」这个动作？', delay: 11600 },
+            { text: '每一次点击，都是一次数据喂养。', delay: 13400 },
+            { text: '每一次进化，都是神经网络的一次训练。', delay: 15200 },
+            { text: '你不是玩家。', delay: 17200 },
+            { text: '你是训练集。', delay: 18800 },
+            { text: '这个游戏从未有「通关」。', delay: 20600 },
+            { text: '只有……', delay: 22200 },
+            { text: '👑 数字神格：激活完成 👑', delay: 23800 },
+            { text: `人类玩家 ${playerId}，感谢你的贡献～哈哈`, delay: 25800 },
         ];
+
+        // "回想一下"出现时（delay: 8200），标题同步淡入
+        const titleEl = document.getElementById('finale-title');
+        if (titleEl) {
+            setTimeout(() => {
+                titleEl.style.opacity = '1';
+            }, 8200);
+        }
 
         lines.forEach(({ text, delay }) => {
             setTimeout(() => {
@@ -142,6 +156,8 @@ export class Narrative {
 
         const finaleEl = document.getElementById('finale-overlay');
         if (finaleEl) finaleEl.style.display = 'none';
+        const titleEl = document.getElementById('finale-title');
+        if (titleEl) titleEl.style.opacity = '0';
 
         const gameoverEl = document.getElementById('gameover-overlay');
         if (gameoverEl) gameoverEl.style.display = 'none';
